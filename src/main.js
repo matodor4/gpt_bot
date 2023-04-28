@@ -25,10 +25,10 @@ bot.on(message("voice"), async (ctx) => {
         const mp3Path = await ogg.toMp3(oggPath, userID)
 
         const text = await openai.transcription(mp3Path)
-        await ctx.reply(text)
-        // const response = openai.chat(text)
+        const messages = [{role: "user", content: text }]
+        const response = await openai.chat(messages)
+        await ctx.reply(response.content)
 
-        await ctx.reply(JSON.stringify(String(oggPath), null, 2))
     } catch (e) {
         console.log("error while processing voice message", e.message)
     }
