@@ -1,9 +1,10 @@
 import axios from "axios";
 import { createWriteStream } from "fs"
 import { dirname, resolve } from "path"
-import {fileURLToPath} from "url"
+import { fileURLToPath } from "url"
 import ffmpeg from "fluent-ffmpeg";
 import installer from "@ffmpeg-installer/ffmpeg"
+
 
 
 
@@ -21,7 +22,7 @@ class OggConverter {
                     .inputOption("-t 30")
                     .output(outputPath)
                     .on("end", () => resolve(outputPath))
-                    .on("error", (err) => reject(err))
+                    .on("error", (err) => reject(err.message))
                     .run()
             })
         } catch(e) {
@@ -31,7 +32,6 @@ class OggConverter {
     }
 
     async fetch(url, filename) {
-        console.log(url)
         try {
             const oggPath = resolve(__dirName, "../voices/", `${filename}.ogg`)
             const response = await axios({

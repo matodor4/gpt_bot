@@ -1,6 +1,6 @@
 import { Configuration, OpenAIApi } from "openai";
 import config from "config"
-import {createReadStream} from "fs";
+import { createReadStream } from "fs";
 
 class OpenAI {
     constructor(apiKey) {
@@ -14,6 +14,7 @@ class OpenAI {
     chat() {}
 
     async transcription(filePath) {
+        console.log("filePath", filePath)
         try{
             const response = await this.openai.createTranscription(
                 createReadStream(filePath),
@@ -26,4 +27,4 @@ class OpenAI {
     }
 }
 
-export const openai = new OpenAIApi(config.get("OPENAI_KEY"))
+export const openai = new OpenAI(config.get("OPENAI_KEY"))
