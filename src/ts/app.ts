@@ -32,8 +32,6 @@ export class Application {
             console.log(errMsg)
             throw err
         }
-
-
     }
-
 }
+
