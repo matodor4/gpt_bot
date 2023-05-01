@@ -1,23 +1,26 @@
 import { Telegraf } from "telegraf"
-import config from "config"
 import {Converter} from "./infra/converter.js";
 import {Application} from "./app.js";
 import {FileDownloader} from "./infra/fileDownloader.js";
 import {OpenAI} from "./infra/openAI.js";
 import {message} from "telegraf/filters";
-import {resolve} from "path";
-import c from "config";
+import {Config} from "./config.js";
 
-const telegramToken: string = config.get("TELEGRAM_TOKEN")
-const gptToken: string = config.get("OPENAI_KEY")
 
+const openAIKey = process.env.OPENAI_KEY!
+const telegramToken = process.env.TELEGRAM_TOKEN!
+const config = new Config(openAIKey, telegramToken)
+const err =  config.validate()
+if (err != null) {
+    console.log("get config error")
+}
 // создаем инстанс приложения
 const converter = new Converter()
 const downloader = new FileDownloader()
-const openAI = new OpenAI(gptToken)
+const openAI = new OpenAI(config.openAIKey)
 
 const app = new Application(downloader, converter, openAI)
-const bot = new Telegraf(telegramToken)
+const bot = new Telegraf(config.telegramToken)
 
 console.log("start")
 const resp = bot.launch()

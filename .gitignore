@@ -1,3 +1,4 @@
 node_modules
 voices
 .env.local
+config
