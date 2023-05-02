@@ -21,3 +21,17 @@ services:
       - POSTGRES_PASSWORD=your_postgres_password
       - POSTGRES_DB=your_postgres_db
     restart: unless-stopped
+
+  redis:
+    image: redis:latest
+    restart: always
+    ports:
+      - '6379:6379'
+#    command: redis-server --save 20 1 --loglevel warning --requirepass eYVX7EwVmmxKPCDmwMtyKVge8oLd2t81
+#    command: /bin/sh -c "redis-server --requirepass $$REDIS_HOST_PASSWORD"
+    environment:
+      - ALLOW_EMPTY_PASSWORD=yes
+#      - REDIS_PASSWORD=wise_secret
+#      - REDIS_USER=wise_bot
+    volumes:
+      - "./data:/data"

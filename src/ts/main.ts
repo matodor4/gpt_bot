@@ -7,6 +7,7 @@ import {message} from "telegraf/filters";
 import {Config} from "./config.js";
 
 
+
 const openAIKey = process.env.OPENAI_KEY!
 const telegramToken = process.env.TELEGRAM_TOKEN!
 const config = new Config(openAIKey, telegramToken)
@@ -43,6 +44,8 @@ bot.command("new", async (ctx:MyContext) => {
 resp.catch(async (e) => {
     console.log(e.message)
 })
+
+
 
 bot.on(message("text"), async ctx => {
     ctx.session ??= INITIAL_SESSION
