@@ -47,6 +47,3 @@ bot.on("voice", async (ctx) => {
     console.log("userID", userID);
     await app.Voice(ctx, link.href, userID);
 });
-// Обработка событий
-// Голосовое сообщение
-// app.voice()
