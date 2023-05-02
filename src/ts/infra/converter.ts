@@ -21,7 +21,7 @@ export class Converter {
             })
         } catch(err:any) {
             console.log(err)
-             return err.message
+            throw err
         }
     }
 
