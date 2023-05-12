@@ -10,7 +10,6 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-
 enum messageType {
   TEXT
   VOICE
@@ -23,14 +22,13 @@ enum messageFrom {
 
 model User {
   id         String   @id @default(uuid())
-  telegramID String
+  telegramID String   @unique
   name       String
-  createdAt  DateTime @db.Timestamp()
+  createdAt  DateTime @default(now()) @db.Timestamp()
   updatedAt  DateTime @updatedAt
 
   withMessages Message[]
 }
-
 
 model Message {
   id       String      @id @default(uuid())
@@ -44,7 +42,7 @@ model Message {
 
   fromUser  User     @relation(fields: [userID], references: [id])
   deleted   Boolean?
-  createdAt DateTime @db.Timestamp()
+  createdAt DateTime @default(now()) @db.Timestamp()
   updatedAt DateTime @updatedAt
 }
 
@@ -53,4 +51,5 @@ model Chat {
   title        String
   discription  String?
   withMessages Message[]
+  createdAt    DateTime  @default(now()) @db.Timestamp()
 }
