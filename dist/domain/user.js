@@ -1,4 +1,4 @@
-class User {
+export class User {
     telegramID;
     name;
     constructor(telegramID, name) {
@@ -6,4 +6,6 @@ class User {
         this.name = name;
     }
 }
-export {};
+export function UserFromDTO(dto) {
+    return new User(dto.telegramID, dto.name);
+}
