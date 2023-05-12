@@ -17,10 +17,12 @@ services:
   db:
     image: postgres:12
     environment:
-      - POSTGRES_USER=your_postgres_user
-      - POSTGRES_PASSWORD=your_postgres_password
-      - POSTGRES_DB=your_postgres_db
+      - POSTGRES_USER=wise_bot
+      - POSTGRES_PASSWORD=wise_bot
+      - POSTGRES_DB=wise_bot
     restart: unless-stopped
+    ports:
+      - '5432:5432'
 
   redis:
     image: redis:latest

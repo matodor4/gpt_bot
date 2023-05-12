@@ -1,0 +1,55 @@
+<mxfile host="app.diagrams.net" modified="2023-05-12T14:05:45.255Z" agent="Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/113.0.0.0 Safari/537.36" etag="k65b8pa-_Yd0SWzU1Rol" version="21.2.9" type="device">
+  <diagram name="Page-1" id="JE-RVNB8du6JFukx5snS">
+    <mxGraphModel dx="683" dy="406" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="GNXN5NMo_y2PLXBn1vKB-2" value="User&lt;br&gt;id uuid&lt;br&gt;telegramID int&lt;br&gt;name string&lt;br&gt;createdAt&lt;br&gt;updatedAt" style="whiteSpace=wrap;html=1;aspect=fixed;" vertex="1" parent="1">
+          <mxGeometry x="40" y="40" width="160" height="160" as="geometry" />
+        </mxCell>
+        <mxCell id="GNXN5NMo_y2PLXBn1vKB-3" value="Message&lt;br&gt;id uuid&lt;br&gt;body text&lt;br&gt;userID uuid&lt;br&gt;chatID Int&lt;br&gt;type (answer or question)&amp;nbsp;&lt;br&gt;number&lt;br&gt;createdAt&lt;br style=&quot;border-color: var(--border-color);&quot;&gt;updatedAt" style="whiteSpace=wrap;html=1;aspect=fixed;" vertex="1" parent="1">
+          <mxGeometry x="360" y="40" width="160" height="160" as="geometry" />
+        </mxCell>
+        <mxCell id="GNXN5NMo_y2PLXBn1vKB-5" value="" style="endArrow=classic;html=1;rounded=0;exitX=-0.019;exitY=0.465;exitDx=0;exitDy=0;exitPerimeter=0;entryX=0.996;entryY=0.477;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="1" source="GNXN5NMo_y2PLXBn1vKB-3" target="GNXN5NMo_y2PLXBn1vKB-2">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="170" y="160" as="sourcePoint" />
+            <mxPoint x="330" y="160" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="GNXN5NMo_y2PLXBn1vKB-6" value="userID" style="edgeLabel;resizable=0;html=1;align=center;verticalAlign=middle;" connectable="0" vertex="1" parent="GNXN5NMo_y2PLXBn1vKB-5">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="GNXN5NMo_y2PLXBn1vKB-7" value="Source" style="edgeLabel;resizable=0;html=1;align=left;verticalAlign=bottom;" connectable="0" vertex="1" parent="GNXN5NMo_y2PLXBn1vKB-5">
+          <mxGeometry x="-1" relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="GNXN5NMo_y2PLXBn1vKB-8" value="Chats&lt;br&gt;chatID&lt;br&gt;userID&lt;br&gt;tittle(generate by gpt)&lt;br&gt;createdAt&lt;br&gt;updatedAt" style="whiteSpace=wrap;html=1;aspect=fixed;" vertex="1" parent="1">
+          <mxGeometry x="200" y="280" width="160" height="160" as="geometry" />
+        </mxCell>
+        <mxCell id="GNXN5NMo_y2PLXBn1vKB-15" value="" style="endArrow=classic;html=1;rounded=0;exitX=0.478;exitY=-0.011;exitDx=0;exitDy=0;exitPerimeter=0;" edge="1" parent="1" source="GNXN5NMo_y2PLXBn1vKB-8">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="504" y="300" as="sourcePoint" />
+            <mxPoint x="440" y="200" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="GNXN5NMo_y2PLXBn1vKB-16" value="chatID" style="edgeLabel;resizable=0;html=1;align=center;verticalAlign=middle;" connectable="0" vertex="1" parent="GNXN5NMo_y2PLXBn1vKB-15">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="GNXN5NMo_y2PLXBn1vKB-17" value="Source" style="edgeLabel;resizable=0;html=1;align=left;verticalAlign=bottom;" connectable="0" vertex="1" parent="GNXN5NMo_y2PLXBn1vKB-15">
+          <mxGeometry x="-1" relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="GNXN5NMo_y2PLXBn1vKB-18" value="" style="endArrow=classic;html=1;rounded=0;exitX=0.466;exitY=-0.02;exitDx=0;exitDy=0;exitPerimeter=0;entryX=0.5;entryY=1;entryDx=0;entryDy=0;" edge="1" parent="1" source="GNXN5NMo_y2PLXBn1vKB-8" target="GNXN5NMo_y2PLXBn1vKB-2">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="286" y="288" as="sourcePoint" />
+            <mxPoint x="450" y="210" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="GNXN5NMo_y2PLXBn1vKB-19" value="userID" style="edgeLabel;resizable=0;html=1;align=center;verticalAlign=middle;" connectable="0" vertex="1" parent="GNXN5NMo_y2PLXBn1vKB-18">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="GNXN5NMo_y2PLXBn1vKB-20" value="Source" style="edgeLabel;resizable=0;html=1;align=left;verticalAlign=bottom;" connectable="0" vertex="1" parent="GNXN5NMo_y2PLXBn1vKB-18">
+          <mxGeometry x="-1" relative="1" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
