@@ -20,36 +20,35 @@ enum messageFrom {
   GPT
 }
 
-model User {
+model user {
   id         String   @id @default(uuid())
-  telegramID String   @unique
+  telegramID Int      @unique
   name       String
   createdAt  DateTime @default(now()) @db.Timestamp()
   updatedAt  DateTime @updatedAt
 
-  withMessages Message[]
+  withMessages message[]
 }
 
-model Message {
-  id       String      @id @default(uuid())
-  body     String      @db.Text
-  userID   String
-  chatID   String
-  fromChat Chat        @relation(fields: [chatID], references: [id])
-  type     messageType
-  from     messageFrom
-  number   Int
+model message {
+  id     String      @id @default(uuid())
+  body   String      @db.Text
+  userID String
+  chatID Int
+  type   messageType
+  from   messageFrom
+  number Int
 
-  fromUser  User     @relation(fields: [userID], references: [id])
+  fromUser  user     @relation(fields: [userID], references: [id])
   deleted   Boolean?
   createdAt DateTime @default(now()) @db.Timestamp()
   updatedAt DateTime @updatedAt
 }
 
-model Chat {
-  id           String    @id @default(uuid())
-  title        String
-  discription  String?
-  withMessages Message[]
-  createdAt    DateTime  @default(now()) @db.Timestamp()
+model dialog {
+  id          String   @id @default(uuid())
+  chatID      Int      @unique @map("telegramID")
+  title       String?
+  discription String?
+  createdAt   DateTime @default(now()) @db.Timestamp()
 }
