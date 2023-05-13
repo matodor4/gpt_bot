@@ -1,12 +1,8 @@
-import { PrismaClient } from '@prisma/client';
 import { UserFromDTO } from "../domain/user.js";
 export class UserRepository {
     client;
-    constructor() {
-        this.client = new PrismaClient();
-    }
-    close() {
-        this.client.$disconnect();
+    constructor(client) {
+        this.client = client;
     }
     async GetUser(telegramID) {
         const userDTO = await this.client.user.findFirst({
@@ -16,14 +12,11 @@ export class UserRepository {
         });
         if (userDTO === undefined) {
             const error = new Error("failed to find user");
-            this.close();
             return Promise.resolve([null, error]);
         }
         if (userDTO === null) {
-            this.close();
             return Promise.resolve([null, null]);
         }
-        this.close();
         return Promise.resolve([UserFromDTO(userDTO), null]);
     }
     async SaveUser(user) {
@@ -33,10 +26,8 @@ export class UserRepository {
             } });
         if (userDTO === undefined) {
             const error = new Error("failed to save user");
-            this.close();
             return Promise.resolve([null, error]);
         }
-        this.close();
         return Promise.resolve([UserFromDTO(userDTO), null]);
     }
     async SaveIfNotExist(user) {
@@ -54,10 +45,8 @@ export class UserRepository {
         });
         if (userDTO === undefined) {
             const error = new Error("failed to save user");
-            this.close();
             return Promise.resolve([null, error]);
         }
-        this.close();
         return Promise.resolve([UserFromDTO(userDTO), null]);
     }
     async UpdateUser(user) {
@@ -71,10 +60,8 @@ export class UserRepository {
         });
         if (userDTO === undefined) {
             const error = new Error("failed to update user");
-            this.close();
             return Promise.resolve([null, error]);
         }
-        this.close();
         return Promise.resolve([UserFromDTO(userDTO), null]);
     }
     async DeleteUser(telegramID) {
@@ -85,10 +72,8 @@ export class UserRepository {
         });
         if (deletedUser === undefined) {
             const error = new Error("failed to delete user");
-            this.close();
             return Promise.resolve([null, error]);
         }
-        this.close();
         return Promise.resolve([null, null]);
     }
 }

@@ -1,9 +1,12 @@
 export class Config {
     openAIKey;
     telegramToken;
-    constructor(openAIKey, telegramToken) {
+    constructor(openAIKey = "", telegramToken = "") {
         this.openAIKey = openAIKey;
         this.telegramToken = telegramToken;
+        if (this.validate() instanceof Error) {
+            throw this.validate();
+        }
     }
     validate() {
         if (this.telegramToken === "") {
