@@ -21,10 +21,9 @@ export class ChatRepository {
         });
         if (savedChat === undefined) {
             const error = new Error("failed to save user");
-            return Promise.resolve([null, error]);
+            return savedChat;
         }
-        const newChat = new Chat(savedChat.chatID, savedChat.title ?? "", savedChat.discription ?? "");
-        return Promise.resolve([newChat, null]);
+        return null;
     }
     async Delete(id) {
         const deletedChat = await this.client.dialog.delete({

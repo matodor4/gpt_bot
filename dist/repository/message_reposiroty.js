@@ -1,24 +1,22 @@
-import { Message } from "../domain/message.js";
 export class MessageRepository {
     client;
     constructor(client) {
         this.client = client;
     }
-    async SaveMessage(user, message, msgFrom, msgType, chatID) {
+    async SaveMessage(msg) {
         const createMsg = await this.client.message.create({
             data: {
-                from: msgFrom,
-                type: msgType,
-                fromUser: { connect: { telegramID: user.telegramID } },
-                chatID: chatID,
-                body: message.text,
+                from: msg.msgFrom,
+                type: msg.msgType,
+                fromUser: { connect: { telegramID: msg.userID } },
+                chatID: msg.chatID,
+                body: msg.text,
             }
         });
         if (createMsg === undefined) {
             const error = new Error("failed to save message");
             return error;
         }
-        const msg = new Message(createMsg.body, chatID);
         return null;
     }
     async GetMesageByID(messageID) {

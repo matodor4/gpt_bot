@@ -3,3 +3,4 @@ voices
 .env.local
 config
 data
+.vscode/
