@@ -20,29 +20,15 @@ export class Application {
         this.openAI = openAI
     }
 
-    async Voice(ctx: MyContext, href: string, telegramUserID: string): Promise<void> {
-        try {
+    async Voice(ctx: MyContext, href: string, telegramUserID: string): Promise<string> {
             const oggFilePath = await this.downloader.Fetch(href, telegramUserID)
 
             const mp3FilePath = await this.converter.ToMp3(oggFilePath, telegramUserID)
 
             const text = await this.openAI.transcription(mp3FilePath)
-            console.log("voice to text", text)
+            
+            return text
 
-            ctx.session.messages.push({"role": "user", content: text})
-            const resp = await this.openAI.chat(ctx.session.messages)
-
-            ctx.session.messages.push({
-                role: "assistant",
-                content: resp.content,
-            })
-            ctx.reply(resp.content)
-
-        } catch (err: any) {
-            const errMsg: string = err.message
-            console.log(errMsg)
-            throw err
-        }
     }
     async Text(ctx: MyContext):Promise<string> {
         
