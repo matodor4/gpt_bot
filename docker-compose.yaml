@@ -17,7 +17,23 @@ services:
   db:
     image: postgres:12
     environment:
-      - POSTGRES_USER=your_postgres_user
-      - POSTGRES_PASSWORD=your_postgres_password
-      - POSTGRES_DB=your_postgres_db
+      - POSTGRES_USER=wise_bot
+      - POSTGRES_PASSWORD=wise_bot
+      - POSTGRES_DB=wise_bot
     restart: unless-stopped
+    ports:
+      - '5432:5432'
+
+  redis:
+    image: redis:latest
+    restart: always
+    ports:
+      - '6379:6379'
+#    command: redis-server --save 20 1 --loglevel warning --requirepass eYVX7EwVmmxKPCDmwMtyKVge8oLd2t81
+#    command: /bin/sh -c "redis-server --requirepass $$REDIS_HOST_PASSWORD"
+    environment:
+      - ALLOW_EMPTY_PASSWORD=yes
+#      - REDIS_PASSWORD=wise_secret
+#      - REDIS_USER=wise_bot
+    volumes:
+      - "./data:/data"

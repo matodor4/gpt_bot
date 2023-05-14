@@ -1,0 +1,52 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum messageType {
+  TEXT
+  VOICE
+}
+
+enum messageFrom {
+  USER
+  GPT
+}
+
+model user {
+  id         String   @id @default(uuid())
+  telegramID Int      @unique
+  name       String
+  createdAt  DateTime @default(now()) @db.Timestamp()
+  updatedAt  DateTime @updatedAt
+
+  withMessages message[]
+}
+
+model message {
+  id     String      @id @default(uuid())
+  body   String      @db.Text
+  userID String
+  chatID Int
+  type   messageType
+  from   messageFrom
+  fromUser  user     @relation(fields: [userID], references: [id])
+  deleted   Boolean?
+  createdAt DateTime @default(now()) @db.Timestamp()
+  updatedAt DateTime @updatedAt
+}
+
+model dialog {
+  id          String   @id @default(uuid())
+  chatID      Int      @unique @map("telegramID")
+  title       String?
+  discription String?
+  createdAt   DateTime @default(now()) @db.Timestamp()
+}

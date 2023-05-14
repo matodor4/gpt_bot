@@ -5,7 +5,7 @@ run: ## Install all needed tools, e.g. for static checks
 .PHONY: up
 up: # up docker containers
 	docker-compose --env-file .env.local up -d --no-build --remove-orphans \
-		web
+		db
 
 .PHONY: down
 down:

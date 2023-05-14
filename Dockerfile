@@ -16,4 +16,4 @@ RUN npm install
 COPY . .
 
 EXPOSE 8080
-CMD [ "node", "src/main.js" ]
+CMD [ "node", "dist/main.js" ]

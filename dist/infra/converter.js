@@ -19,7 +19,7 @@ export class Converter {
         }
         catch (err) {
             console.log(err);
-            return err.message;
+            throw err;
         }
     }
 }
