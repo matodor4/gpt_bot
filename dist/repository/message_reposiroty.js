@@ -1,15 +1,14 @@
-import { messageType } from "@prisma/client";
 import { Message } from "../domain/message.js";
 export class MessageRepository {
     client;
     constructor(client) {
         this.client = client;
     }
-    async SaveMessage(user, message, msgFrom, chatID) {
+    async SaveMessage(user, message, msgFrom, msgType, chatID) {
         const createMsg = await this.client.message.create({
             data: {
                 from: msgFrom,
-                type: messageType.TEXT,
+                type: msgType,
                 fromUser: { connect: { telegramID: user.telegramID } },
                 chatID: chatID,
                 body: message.text,
@@ -17,10 +16,10 @@ export class MessageRepository {
         });
         if (createMsg === undefined) {
             const error = new Error("failed to save message");
-            return Promise.resolve([null, error]);
+            return error;
         }
         const msg = new Message(createMsg.body, chatID);
-        return Promise.resolve([msg, null]);
+        return null;
     }
     async GetMesageByID(messageID) {
         const findMsg = await this.client.message.findFirst({

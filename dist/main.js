@@ -61,26 +61,47 @@ async function main() {
             throw userErr;
         }
         ctx.session.messages.push({ "role": "user", content: msg.text });
-        let [savedMsg, msgErr] = await msgRepo.SaveMessage(user, msg, "USER", chat.telegramID);
-        if (msgErr !== null) {
-            throw msgErr;
+        let err = await msgRepo.SaveMessage(user, msg, "USER", "TEXT", chat.telegramID);
+        if (err !== null) {
+            throw err;
         }
         const respone = await app.Text(ctx);
-        let [savedResp, respMsgErr] = await msgRepo.SaveMessage(user, new Message(respone, id), "GPT", chat.telegramID);
-        if (respMsgErr !== null) {
-            throw msgErr;
+        err = await msgRepo.SaveMessage(user, new Message(respone, id), "GPT", "TEXT", chat.telegramID);
+        if (err !== null) {
+            throw err;
         }
     });
     bot.on("voice", async (ctx) => {
         ctx.session ??= INITIAL_SESSION;
         console.log("start processing voice message");
+        const { id, username, is_bot, language_code } = ctx.message.from;
+        const user = new User(id, username ?? "no_name", language_code ?? "ru", is_bot);
+        const chat = new Chat(ctx.message.chat.id);
+        const [savedChat, chatErr] = await chatRepo.Save(chat);
+        if (chatErr !== null) {
+            throw chatErr;
+        }
+        const [savedUser, userErr] = await userRepo.SaveIfNotExist(user);
+        if (userErr !== null) {
+            throw userErr;
+        }
         const fileID = ctx.message.voice.file_id;
         console.log("fileID", fileID);
         const link = await ctx.telegram.getFileLink(fileID);
         console.log("link", link.href);
         const userID = String(ctx.message.from.id);
         console.log("userID", userID);
-        await app.Voice(ctx, link.href, userID);
+        const text = await app.Voice(ctx, link.href, userID);
+        let err = await msgRepo.SaveMessage(user, new Message(text, id), "USER", "VOICE", chat.telegramID);
+        if (err !== null) {
+            throw err;
+        }
+        ctx.session.messages.push({ "role": "user", content: text });
+        const respone = await app.Text(ctx);
+        err = await msgRepo.SaveMessage(user, new Message(respone, id), "GPT", "TEXT", chat.telegramID);
+        if (err !== null) {
+            throw err;
+        }
     });
 }
 main()

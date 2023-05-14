@@ -11,11 +11,11 @@ export class MessageRepository {
         this.client = client
     }
 
-    public async SaveMessage(user: User, message: Message, msgFrom: messageFrom, chatID: number): PairPromiseResult<Message> {
+    public async SaveMessage(user: User, message: Message, msgFrom: messageFrom, msgType: messageType ,chatID: number): Promise<null|Error> {
         const createMsg = await this.client.message.create({
             data: {
                 from: msgFrom,
-                type: messageType.TEXT,
+                type: msgType,
                 fromUser: { connect: { telegramID: user.telegramID } },
                 chatID: chatID,
                 body: message.text,
@@ -24,12 +24,12 @@ export class MessageRepository {
         if (createMsg === undefined) {
             const error = new Error("failed to save message")
 
-            return Promise.resolve([null, error])
+            return error
         }
 
         const msg = new Message(createMsg.body, chatID)
 
-        return Promise.resolve([msg, null])
+        return null
     }
 
     public async GetMesageByID(messageID: string) {
