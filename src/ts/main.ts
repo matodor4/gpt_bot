@@ -71,7 +71,7 @@ async function main() {
 
         const user = new User(id, username ?? "no_name", language_code ?? "ru", is_bot)
         const chat = new Chat(ctx.message.chat.id)
-        const msg = new Message(ctx.message.text, 1, id)
+        const msg = new Message(ctx.message.text, id)
 
         const [savedChat, chatErr] = await chatRepo.Save(chat)
         if (chatErr !== null) {
@@ -81,13 +81,20 @@ async function main() {
         if (userErr !== null) {
             throw userErr
         }
+
+        ctx.session.messages.push({"role": "user", content: msg.text})
+
         let [savedMsg, msgErr] = await msgRepo.SaveMessage(user, msg, "USER", chat.telegramID)
         if (msgErr !== null) {
             throw msgErr
         }
         
-        app.Text(ctx)
-        
+        const respone = await app.Text(ctx)
+
+        let [savedResp, respMsgErr] = await msgRepo.SaveMessage(user, new Message(respone, id), "GPT", chat.telegramID)
+        if (respMsgErr !== null) {
+            throw msgErr
+        }
     })
 
     bot.on("voice", async (ctx) => {

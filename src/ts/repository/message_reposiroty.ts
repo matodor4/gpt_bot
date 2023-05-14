@@ -11,11 +11,10 @@ export class MessageRepository {
         this.client = client
     }
 
-    public async SaveMessage(user: User, message: Message, msgType: string, chatID: number): PairPromiseResult<Message> {
+    public async SaveMessage(user: User, message: Message, msgFrom: messageFrom, chatID: number): PairPromiseResult<Message> {
         const createMsg = await this.client.message.create({
             data: {
-                number: message.number,
-                from: messageFrom.USER,
+                from: msgFrom,
                 type: messageType.TEXT,
                 fromUser: { connect: { telegramID: user.telegramID } },
                 chatID: chatID,
@@ -28,7 +27,7 @@ export class MessageRepository {
             return Promise.resolve([null, error])
         }
 
-        const msg = new Message(createMsg.body, 21, chatID)
+        const msg = new Message(createMsg.body, chatID)
 
         return Promise.resolve([msg, null])
     }

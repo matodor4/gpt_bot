@@ -37,8 +37,6 @@ model message {
   chatID Int
   type   messageType
   from   messageFrom
-  number Int
-
   fromUser  user     @relation(fields: [userID], references: [id])
   deleted   Boolean?
   createdAt DateTime @default(now()) @db.Timestamp()

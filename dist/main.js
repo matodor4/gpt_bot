@@ -15,13 +15,14 @@ import { PrismaClient } from "@prisma/client";
 const INITIAL_SESSION = {
     messages: []
 };
+let client;
 let app;
 let bot;
 let userRepo;
 let chatRepo;
 let msgRepo;
 async function init() {
-    const client = new PrismaClient();
+    client = new PrismaClient();
     userRepo = new UserRepository(client);
     msgRepo = new MessageRepository(client);
     chatRepo = new ChatRepository(client);
@@ -50,11 +51,25 @@ async function main() {
         const { id, username, is_bot, language_code } = ctx.message.from;
         const user = new User(id, username ?? "no_name", language_code ?? "ru", is_bot);
         const chat = new Chat(ctx.message.chat.id);
-        const msg = new Message(ctx.message.text, 1, id.toString());
-        const savedChat = await chatRepo.Save(chat);
-        const savedUser = await userRepo.SaveIfNotExist(user);
-        const savedMsg = await msgRepo.SaveMessage(user, msg, "USER", chat.telegramID);
-        app.Text(ctx, msg.text);
+        const msg = new Message(ctx.message.text, id);
+        const [savedChat, chatErr] = await chatRepo.Save(chat);
+        if (chatErr !== null) {
+            throw chatErr;
+        }
+        const [savedUser, userErr] = await userRepo.SaveIfNotExist(user);
+        if (userErr !== null) {
+            throw userErr;
+        }
+        ctx.session.messages.push({ "role": "user", content: msg.text });
+        let [savedMsg, msgErr] = await msgRepo.SaveMessage(user, msg, "USER", chat.telegramID);
+        if (msgErr !== null) {
+            throw msgErr;
+        }
+        const respone = await app.Text(ctx);
+        let [savedResp, respMsgErr] = await msgRepo.SaveMessage(user, new Message(respone, id), "GPT", chat.telegramID);
+        if (respMsgErr !== null) {
+            throw msgErr;
+        }
     });
     bot.on("voice", async (ctx) => {
         ctx.session ??= INITIAL_SESSION;
@@ -71,5 +86,6 @@ async function main() {
 main()
     .catch(err => {
     console.error(err);
+    client.$disconnect();
     process.exit(1);
 });
