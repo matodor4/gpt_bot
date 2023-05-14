@@ -27,13 +27,13 @@ export class Application {
             throw err;
         }
     }
-    async Text(ctx, message) {
-        ctx.session.messages.push({ "role": "user", content: message });
+    async Text(ctx) {
         const resp = await this.openAI.chat(ctx.session.messages);
         ctx.session.messages.push({
             role: "assistant",
             content: resp.content,
         });
         ctx.reply(resp.content);
+        return resp.content;
     }
 }
