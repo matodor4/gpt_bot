@@ -26,9 +26,9 @@ export class UserRepository {
             } });
         if (userDTO === undefined) {
             const error = new Error("failed to save user");
-            return Promise.resolve([null, error]);
+            return error;
         }
-        return Promise.resolve([UserFromDTO(userDTO), null]);
+        return null;
     }
     async SaveIfNotExist(user) {
         const userDTO = await this.client.user.upsert({
@@ -45,9 +45,9 @@ export class UserRepository {
         });
         if (userDTO === undefined) {
             const error = new Error("failed to save user");
-            return Promise.resolve([null, error]);
+            return error;
         }
-        return Promise.resolve([UserFromDTO(userDTO), null]);
+        return null;
     }
     async UpdateUser(user) {
         const userDTO = await this.client.user.update({

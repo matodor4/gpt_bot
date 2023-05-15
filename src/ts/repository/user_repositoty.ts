@@ -34,7 +34,7 @@ export class UserRepository {
         return Promise.resolve([UserFromDTO(userDTO), null])
     }
 
-    public async SaveUser(user:User):PairPromiseResult<User> {
+    public async SaveUser(user:User):Promise<null | Error> {
         const userDTO = await this.client.user.create({data:{
                 name: user.name,
                 telegramID: user.telegramID
@@ -43,14 +43,14 @@ export class UserRepository {
             const error = new Error("failed to save user")
             
 
-            return Promise.resolve([null, error])
+            return error
         }
         
 
-        return Promise.resolve([UserFromDTO(userDTO), null])
+        return null
     }
 
-    public async SaveIfNotExist(user:User):PairPromiseResult<User> {
+    public async SaveIfNotExist(user:User):Promise<null | Error> {
         const userDTO = await this.client.user.upsert({
             where: {
                 telegramID: user.telegramID
@@ -67,11 +67,11 @@ export class UserRepository {
             const error = new Error("failed to save user")
             
 
-            return Promise.resolve([null, error])
+            return error
         }
         
 
-        return Promise.resolve([UserFromDTO(userDTO), null])
+        return null
     }
 
     public async UpdateUser(user:User):PairPromiseResult<User> {

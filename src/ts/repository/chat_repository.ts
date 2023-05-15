@@ -11,7 +11,7 @@ export class ChatRepository {
     }
 
 
-    public async Save(chat: Chat): PairPromiseResult<Chat> {
+    public async Save(chat: Chat): Promise<null | Error> {
         const savedChat = await this.client.dialog.upsert({
             where: {
                 chatID: chat.telegramID,
@@ -29,12 +29,10 @@ export class ChatRepository {
         if (savedChat === undefined) {
             const error = new Error("failed to save user")
 
-            return Promise.resolve([null, error])
+            return savedChat
         }
 
-        const newChat = new Chat(savedChat.chatID, savedChat.title ?? "", savedChat.discription ?? "")
-
-        return Promise.resolve([newChat, null])
+        return null
     }
     public async Delete(id: number): PairPromiseResult<Chat> {
         const deletedChat = await this.client.dialog.delete(
